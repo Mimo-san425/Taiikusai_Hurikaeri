@@ -97,7 +97,7 @@ button{
   cursor:pointer;
 }
 
-/* まとめ */
+/* 感想まとめ */
 
 #result{
   width:100%;
@@ -109,10 +109,10 @@ button{
   writing-mode:vertical-rl;
   text-orientation:upright;
 
-  line-height:1.9;
+  line-height:2;
   letter-spacing:2px;
 
-  font-size:18px;
+  font-size:20px;
 
   padding:12px;
 
@@ -137,27 +137,57 @@ button{
   color:#666;
 }
 
+/* 印刷 */
+
 @media print{
 
-  button{
-    display:none;
+  body{
+    background:#fff;
+    padding:0;
   }
 
   .sheet{
     border:none;
+    padding:0;
+    max-width:none;
   }
 
-  body{
-    background:#fff;
+  h1,
+  .step:not(.print-target){
+    display:none !important;
   }
 
-  @page{
-    margin:10mm;
+  .print-target{
+    display:block !important;
+    border:none;
+    margin:0;
+    padding:0;
+  }
+
+  .print-target h2,
+  .print-target button,
+  .print-target .example{
+    display:none !important;
   }
 
   #result{
+    width:100%;
+    height:260mm;
+    min-height:260mm;
+
     border:none;
-    font-size:20px;
+
+    font-size:24px;
+    line-height:2.2;
+
+    padding:10mm;
+
+    overflow:visible;
+  }
+
+  @page{
+    size:A4 portrait;
+    margin:10mm;
   }
 
 }
@@ -445,13 +475,13 @@ value="来年はもっと練習をがんばりたいです。">
 
 <!-- まとめ -->
 
-<div class="step">
+<div class="step print-target">
 
 <h2>
 <ruby>感想<rt>かんそう</rt></ruby>のまとめ
 </h2>
 
-<button onclick="window.print()">
+<button onclick="printResult()">
 PDFにする
 </button>
 
@@ -475,6 +505,113 @@ function picked(name){
   );
 
   return el ? el.value : "";
+
+}
+
+function rubyText(text){
+
+  return text
+
+  .replaceAll(
+    "徒競走",
+    "<ruby>徒競走<rt>ときょうそう</rt></ruby>"
+  )
+
+  .replaceAll(
+    "学年種目",
+    "<ruby>学年種目<rt>がくねんしゅもく</rt></ruby>"
+  )
+
+  .replaceAll(
+    "応援",
+    "<ruby>応援<rt>おうえん</rt></ruby>"
+  )
+
+  .replaceAll(
+    "走りました",
+    "<ruby>走<rt>はし</rt></ruby>りました"
+  )
+
+  .replaceAll(
+    "大きな",
+    "<ruby>大<rt>おお</rt></ruby>きな"
+  )
+
+  .replaceAll(
+    "声",
+    "<ruby>声<rt>こえ</rt></ruby>"
+  )
+
+  .replaceAll(
+    "一生懸命",
+    "<ruby>一生懸命<rt>いっしょうけんめい</rt></ruby>"
+  )
+
+  .replaceAll(
+    "踊りました",
+    "<ruby>踊<rt>おど</rt></ruby>りました"
+  )
+
+  .replaceAll(
+    "友だち",
+    "<ruby>友<rt>とも</rt></ruby>だち"
+  )
+
+  .replaceAll(
+    "力",
+    "<ruby>力<rt>ちから</rt></ruby>"
+  )
+
+  .replaceAll(
+    "合わせました",
+    "<ruby>合<rt>あ</rt></ruby>わせました"
+  )
+
+  .replaceAll(
+    "協力",
+    "<ruby>協力<rt>きょうりょく</rt></ruby>"
+  )
+
+  .replaceAll(
+    "来年",
+    "<ruby>来年<rt>らいねん</rt></ruby>"
+  )
+
+  .replaceAll(
+    "速く",
+    "<ruby>速<rt>はや</rt></ruby>く"
+  )
+
+  .replaceAll(
+    "走れる",
+    "<ruby>走<rt>はし</rt></ruby>れる"
+  )
+
+  .replaceAll(
+    "練習",
+    "<ruby>練習<rt>れんしゅう</rt></ruby>"
+  )
+
+  .replaceAll(
+    "私",
+    "<ruby>私<rt>わたし</rt></ruby>"
+  )
+
+  .replaceAll(
+    "一番",
+    "<ruby>一番<rt>いちばん</rt></ruby>"
+  )
+
+  .replaceAll(
+    "思い出",
+    "<ruby>思<rt>おも</rt></ruby>い<ruby>出<rt>で</rt></ruby>"
+  )
+
+  .replaceAll(
+    "協力",
+    "<ruby>協力<rt>きょうりょく</rt></ruby>"
+  );
+
 }
 
 function build(){
@@ -497,10 +634,10 @@ function build(){
   const next =
   picked("next") || "（らいねんのもくひょう）";
 
-  document.getElementById("result").innerHTML =
+  const text =
 
 `
-<ruby>私<rt>わたし</rt></ruby>の<ruby>一番<rt>いちばん</rt></ruby>の<ruby>思<rt>おも</rt></ruby>い<ruby>出<rt>で</rt></ruby>は${event}です。
+私の一番の思い出は${event}です。
 
 ${action}
 
@@ -508,10 +645,29 @@ ${resultPick}
 
 ${feeling}
 
+なぜなら、
+
 ${reason}
 
 ${next}
 `;
+
+  document.getElementById("result").innerHTML =
+  rubyText(text);
+
+}
+
+/* 印刷 */
+
+function printResult(){
+
+  build();
+
+  setTimeout(()=>{
+
+    window.print();
+
+  },100);
 
 }
 
