@@ -100,9 +100,10 @@ button{
 /* 感想まとめ */
 
 #result{
+
   width:100%;
 
-  min-height:500px;
+  height:75vh;
 
   overflow:auto;
 
@@ -122,6 +123,8 @@ button{
   box-sizing:border-box;
 
   white-space:pre-wrap;
+
+  word-break:keep-all;
 }
 
 /* まとめのふりがな */
@@ -171,18 +174,24 @@ button{
   }
 
   #result{
+
     width:100%;
+
     height:260mm;
-    min-height:260mm;
 
     border:none;
 
     font-size:24px;
+
     line-height:2.2;
 
     padding:10mm;
 
     overflow:visible;
+
+    white-space:pre-wrap;
+
+    word-break:keep-all;
   }
 
   @page{
@@ -608,8 +617,8 @@ function rubyText(text){
   )
 
   .replaceAll(
-    "協力",
-    "<ruby>協力<rt>きょうりょく</rt></ruby>"
+    "理由",
+    "<ruby>理由<rt>りゆう</rt></ruby>"
   );
 
 }
@@ -636,21 +645,21 @@ function build(){
 
   const text =
 
-`
-私の一番の思い出は${event}です。
+`私の一番の思い出は${event}です。
 
+そのとき、
 ${action}
 
 ${resultPick}
 
+だから、
 ${feeling}
 
-なぜなら、
-
+そう思った理由は、
 ${reason}
 
-${next}
-`;
+来年は、
+${next}`;
 
   document.getElementById("result").innerHTML =
   rubyText(text);
